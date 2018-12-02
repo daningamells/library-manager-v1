@@ -1,0 +1,62 @@
+extends nav.pug
+block content  
+  h1 Books
+  
+  p
+    a.button(href='/books/new_book') Create New Book
+  p
+    | Filters 
+    a(href='/books/all_books?page=1') All
+    |  
+    a(href='/books/all_books?filter=overdue&page=1') Overdue
+    |  
+    a(href='/books/all_books?filter=checked&page=1') Checked Out
+    
+  form(action=`/books/all_books/search?page=1`, method='POST')
+    input(type='text' name='searchInput' placeholder='Search for...')
+    input(type='submit', value='Search')
+  table
+    thead
+      tr
+        th Title
+        th Author
+        th Genre
+        th Year Released
+    tbody
+      if loans
+        each loan in loans
+          tr
+            td
+              a(href='/books/' + loan.Book.id)= loan.Book.title
+            td= loan.Book.author
+            td= loan.Book.genre
+            td= loan.Book.first_published
+      else 
+        each book in books
+          tr
+            td
+              a(href='/books/' + book.id)= book.title
+            td= book.author
+            td= book.genre
+            td= book.first_published
+              
+  if pages 
+    if loans
+      .pagination
+        ul
+          li
+            each _, i in Array(pages)
+              a(href= "?filter=" + filter + '&page=' + (i + 1))= i + 1      
+    else       
+      .pagination
+        ul
+          li
+            each _, i in Array(pages)
+              a(href='?page=' + (i + 1))= i + 1
+            
+            
+            
+  
+          
+          
+      
