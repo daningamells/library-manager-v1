@@ -65,9 +65,10 @@ router.get('/patron_detail/:id', function(req, res, next) {
         }
       ],
       where: {
-        book_id: req.params.id
+        patron_id: req.params.id
       }
     }).then(function(data) {
+      console.log(data);
       res.render('patrons/patron_detail', {
         patron: patron,
         loans: data

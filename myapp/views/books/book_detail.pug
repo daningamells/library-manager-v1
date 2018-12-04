@@ -33,7 +33,7 @@ block content
           tr
             td= loan.Book.title
             td
-              a(href="/patrons/" + loan.Patron.id)= loan.Patron.first_name
+              a(href="/patrons/patron_detail/" + loan.Patron.id)= loan.Patron.first_name
             td= loan.loaned_on
             td= loan.return_by
             td= loan.returned_on

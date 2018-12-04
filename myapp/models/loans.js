@@ -45,6 +45,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     returned_on:{
       type: DataTypes.DATEONLY,
+      validate:{
+        isDate:{
+          msg: 'Return on must be a valid date'
+        }
+      }
     },
   }, {
     timestamps: false

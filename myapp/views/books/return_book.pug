@@ -2,6 +2,7 @@ extends ../nav.pug
 block content
   body
   h1 Patron: Return Book
+  include ../errors
   p
     strong= 'Book Title: ' + loan[0].Book.title
   p

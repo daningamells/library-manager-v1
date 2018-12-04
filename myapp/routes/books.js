@@ -219,12 +219,42 @@ router.get('/return_book/:id', (req, res) => {
 // POST return book //
 router.post('/return_book/:id', (req, res) => {
   Loans.findByPk(req.params.id).then(loan => {
-    console.log(req.params);
-    loan.update(req.body);
+    loan.update(req.body).then(function(loan) {
     res.redirect('/loans/all_loans?filter=none&page=1');
+  }).catch(function(err) {
+    if (err.name === "SequelizeValidationError") {
+      Loans.belongsTo(Books, {
+        foreignKey: 'book_id'
+      });
+      Loans.belongsTo(Patrons, {
+        foreignKey: 'patron_id'
+      });
+      Loans.findAll({
+          where: {
+            id: req.params.id
+          },
+          include: [{
+              model: Books,
+              required: true
+            },
+            {
+              model: Patrons,
+              required: true
+            }
+          ]
+        }).then(function(data) {
+          res.render('books/return_book', {
+            loan: data,
+            returned_on: moment().format('YYYY-MM-DD'),
+            errors: err.errors
+          });
+    });
+    } else {
+      throw err;
+    }
+    });
   });
 });
-
 
 // POST search results //
 router.post('/all_books/search', (req, res) => {
